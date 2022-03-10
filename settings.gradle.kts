@@ -6,7 +6,7 @@ pluginManagement {
     }
 }
 
-rootProject.name = "littlekt-game-template"
+rootProject.name = "littlekt-game-base"
 include("game")
 
 enableFeaturePreview("VERSION_CATALOGS")

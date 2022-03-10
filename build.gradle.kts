@@ -1,8 +1,10 @@
 buildscript {
     repositories {
+        maven(url ="https://s01.oss.sonatype.org/content/repositories/snapshots/")
         gradlePluginPortal()
         google()
         mavenCentral()
+        mavenLocal()
     }
     dependencies {
         classpath(libs.bundles.plugins)
@@ -11,10 +13,12 @@ buildscript {
 
 allprojects {
     repositories {
+        maven(url ="https://s01.oss.sonatype.org/content/repositories/snapshots/")
         google()
         mavenCentral()
+        mavenLocal()
     }
 
-    group = "com.game.template"
+    group = "com.lehaine.game"
     version = "1.0"
 }
