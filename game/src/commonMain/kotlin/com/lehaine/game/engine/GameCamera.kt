@@ -14,10 +14,10 @@ import kotlin.time.Duration
 
 
 class GameCamera(
-    val viewBounds: Rect = Rect(),
-    val snapToPixel: Boolean = true,
     virtualWidth: Int,
-    virtualHeight: Int
+    virtualHeight: Int,
+    val viewBounds: Rect = Rect(),
+    val snapToPixel: Boolean = true
 ) : OrthographicCamera(virtualWidth, virtualHeight) {
     var deadZone: Int = 5
     var clampToBounds = true
