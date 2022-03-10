@@ -1,9 +1,6 @@
 package com.lehaine.game.engine
 
-/**
- * @author Colton Daily
- * @date 12/26/2021
- */
+
 interface GameLevel<LevelMark> {
     var gridSize: Int
 

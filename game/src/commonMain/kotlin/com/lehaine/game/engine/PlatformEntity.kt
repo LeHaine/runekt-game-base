@@ -1,9 +1,6 @@
 package com.lehaine.game.engine
 
-/**
- * @author Colton Daily
- * @date 12/26/2021
- */
+
 open class PlatformEntity(level: GameLevel<*>, gridCellSize: Int) : LevelEntity(level, gridCellSize) {
     val onGround
         get() = velocityY == 0f && level.hasCollision(

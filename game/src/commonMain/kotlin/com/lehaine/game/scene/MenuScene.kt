@@ -4,6 +4,7 @@ import com.lehaine.game.Assets
 import com.lehaine.game.Game
 import com.lehaine.game.engine.BaseScene
 import com.lehaine.littlekt.Context
+import com.lehaine.littlekt.Scene
 import com.lehaine.littlekt.async.KtScope
 import com.lehaine.littlekt.graph.node.component.HAlign
 import com.lehaine.littlekt.graph.node.node2d.ui.button
@@ -16,15 +17,12 @@ import com.lehaine.littlekt.util.viewport.ExtendViewport
 import kotlinx.coroutines.launch
 import kotlin.time.Duration
 
-/**
- * @author Colton Daily
- * @date 3/9/2022
- */
+
 class MenuScene(
     private val game: Game,
     private val batch: SpriteBatch,
     context: Context
-) : BaseScene(context) {
+) : Scene(context) {
     private val graph = sceneGraph(context, ExtendViewport(Game.VIRTUAL_WIDTH, Game.VIRTUAL_HEIGHT), batch) {
         centerContainer {
             anchorRight = 1f
@@ -52,7 +50,6 @@ class MenuScene(
                                 game.addScene(GameScene(this@MenuScene.batch, context))
                                 game.setScene<GameScene>()
                                 game.removeScene<MenuScene>()
-                                dispose()
                             }
                         }
                     }
@@ -72,5 +69,9 @@ class MenuScene(
     override suspend fun Context.render(dt: Duration) {
         graph.update(dt)
         graph.render()
+    }
+
+    override suspend fun Context.hide() {
+        dispose()
     }
 }

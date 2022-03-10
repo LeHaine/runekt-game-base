@@ -8,7 +8,7 @@ import kotlin.time.Duration
 open class BaseScene(context: Context) : Scene(context) {
     val updateComponents = mutableListOf<UpdateComponent>()
 
-    override suspend fun Context.render(dt: Duration) {
+    final override suspend fun Context.render(dt: Duration) {
         updateComponents.forEach {
             it.update(dt)
         }
