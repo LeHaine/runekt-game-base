@@ -1,11 +1,11 @@
-package com.lehaine.game.engine
+package com.lehaine.game.engine.nodes
 
 import com.lehaine.littlekt.graphics.tilemap.ldtk.LDtkIntGridLayer
 import com.lehaine.littlekt.graphics.tilemap.ldtk.LDtkLevel
 import com.lehaine.littlekt.math.clamp
 
 
-abstract class LDtkGameLevel<LevelMark>(var level: LDtkLevel) : GameLevel<LevelMark> {
+abstract class LDtkGameLevel<LevelMark>(var level: LDtkLevel) : GameLevel<LevelMark>() {
     val levelWidth get() = level["Collisions"].gridWidth
     val levelHeight get() = level["Collisions"].gridHeight
 

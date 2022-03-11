@@ -3,56 +3,73 @@ package com.lehaine.game.scene
 import com.lehaine.game.Assets
 import com.lehaine.game.Fx
 import com.lehaine.game.Game
-import com.lehaine.game.engine.*
+import com.lehaine.game.engine.BaseScene
+import com.lehaine.game.engine.GameCamera
+import com.lehaine.game.engine.addTmodUpdater
+import com.lehaine.game.engine.nodes.entity
+import com.lehaine.game.engine.nodes.fixedUpdater
+import com.lehaine.game.engine.postUpdate
 import com.lehaine.littlekt.Context
+import com.lehaine.littlekt.graph.node.component.HAlign
+import com.lehaine.littlekt.graph.node.component.VAlign
+import com.lehaine.littlekt.graph.node.node2d.ui.control
+import com.lehaine.littlekt.graph.node.node2d.ui.label
+import com.lehaine.littlekt.graph.sceneGraph
 import com.lehaine.littlekt.graphics.SpriteBatch
 import com.lehaine.littlekt.graphics.TextureAtlas
 import com.lehaine.littlekt.graphics.use
-import com.lehaine.littlekt.util.fastForEach
 import com.lehaine.littlekt.util.viewport.ExtendViewport
 
 
 class GameScene(private val batch: SpriteBatch, context: Context) : BaseScene(context) {
-    private val entities = mutableListOf<Entity>()
     private val atlas: TextureAtlas get() = Assets.atlas
 
     private val camera = GameCamera(Game.VIRTUAL_WIDTH, Game.VIRTUAL_HEIGHT).apply {
         viewport = ExtendViewport(Game.VIRTUAL_WIDTH, Game.VIRTUAL_HEIGHT)
     }
     private val fx = Fx(Assets.atlas)
+    private val sceneGraph = sceneGraph(context, ExtendViewport(Game.VIRTUAL_WIDTH, Game.VIRTUAL_HEIGHT), batch) {
+        fixedUpdater {
+            timesPerSecond = 30
 
-    private var fixedProgressionRatio = 1f
+            entity(16) {
+                onFixedUpdate += {
+                    // ..
+                }
+            }
+        }
+
+        control {
+            name = "UI"
+            anchorRight = 1f
+            anchorBottom = 1f
+
+            label {
+                text = "TODO: Implement game logic"
+                font = Assets.pixelFont
+                anchorRight = 1f
+                anchorBottom = 1f
+                verticalAlign = VAlign.CENTER
+                horizontalAlign = HAlign.CENTER
+            }
+        }
+    }.also { it.initialize() }
 
     init {
         addTmodUpdater(60) { dt, tmod ->
             fx.update(dt, tmod)
 
-            entities.fastForEach {
-                it.fixedProgressionRatio = fixedProgressionRatio
-                it.update(dt)
-            }
-
-            entities.fastForEach {
-                it.postUpdate(dt)
-            }
-
             camera.update(dt)
             camera.viewport.apply(context)
             batch.use(camera.viewProjection) {
                 fx.render(it)
-                entities.fastForEach { entity ->
-                    entity.render(it)
-                }
-
-                Assets.pixelFont.draw(it, "TODO: Implement game logic", 0f, 0f)
             }
+
+            sceneGraph.update(dt)
+            sceneGraph.postUpdate(dt)
+            sceneGraph.render()
         }
 
-        addFixedInterpUpdater(
-            30f,
-            interpolate = { ratio -> fixedProgressionRatio = ratio },
-            updatable = { entities.fastForEach { it.fixedUpdate() } }
-        )
     }
 
     override suspend fun Context.show() {
@@ -61,15 +78,11 @@ class GameScene(private val batch: SpriteBatch, context: Context) : BaseScene(co
 
     override suspend fun Context.hide() {
         updateComponents.clear()
-        entities.fastForEach {
-            it.destroy()
-        }
-        entities.clear()
     }
-
 
     override suspend fun Context.resize(width: Int, height: Int) {
         camera.update(width, height, this)
+        sceneGraph.resize(width, height, true)
     }
 
     private fun initLevel() {

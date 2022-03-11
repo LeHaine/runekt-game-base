@@ -1,13 +1,13 @@
-package com.lehaine.game.engine
+package com.lehaine.game.engine.nodes
 
 import com.lehaine.littlekt.graphics.tilemap.ldtk.LDtkEntity
 import kotlin.math.floor
 
 
-open class LevelEntity(
+open class LevelEntityNode(
     protected open val level: GameLevel<*>,
     gridCellSize: Int
-) : Entity(gridCellSize) {
+) : EntityNode(gridCellSize) {
     var rightCollisionRatio: Float = 0.7f
     var leftCollisionRatio: Float = 0.3f
     var bottomCollisionRatio: Float = 1f

@@ -1,6 +1,6 @@
 package com.lehaine.game
 
-import com.lehaine.game.engine.LDtkGameLevel
+import com.lehaine.game.engine.nodes.LDtkGameLevel
 import com.lehaine.littlekt.graphics.tilemap.ldtk.LDtkLevel
 
 class Level(level: LDtkLevel) : LDtkGameLevel<Level.LevelMark>(level) {

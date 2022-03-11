@@ -1,7 +1,7 @@
-package com.lehaine.game.engine
+package com.lehaine.game.engine.nodes
 
 
-open class PlatformEntity(level: GameLevel<*>, gridCellSize: Int) : LevelEntity(level, gridCellSize) {
+open class PlatformEntityNode(level: GameLevel<*>, gridCellSize: Int) : LevelEntityNode(level, gridCellSize) {
     val onGround
         get() = velocityY == 0f && level.hasCollision(
             cx,

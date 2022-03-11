@@ -1,5 +1,6 @@
 package com.lehaine.game.engine
 
+import com.lehaine.game.engine.nodes.EntityNode
 import com.lehaine.littlekt.graphics.OrthographicCamera
 import com.lehaine.littlekt.math.Rect
 import com.lehaine.littlekt.math.clamp
@@ -21,7 +22,7 @@ class GameCamera(
 ) : OrthographicCamera(virtualWidth, virtualHeight) {
     var deadZone: Int = 5
     var clampToBounds = true
-    var following: Entity? = null
+    var following: EntityNode? = null
         private set
 
     private var shakePower = 1f
@@ -99,7 +100,7 @@ class GameCamera(
         bumpY += angle.radians * distance
     }
 
-    fun follow(entity: Entity?, setImmediately: Boolean = false) {
+    fun follow(entity: EntityNode?, setImmediately: Boolean = false) {
         following = entity
         if (setImmediately) {
             entity ?: error("Target entity not set!!")
