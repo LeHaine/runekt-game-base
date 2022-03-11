@@ -6,6 +6,7 @@ kotlinx-html = "0.7.2"
 kotlinx-coroutines = "1.6.0-native-mt"
 
 littlekt = "0.2.1-SNAPSHOT"
+rune="0.0.1-SNAPSHOT"
 
 [libraries]
 plugin-android = { module = "com.android.tools.build:gradle", version.ref = "plugin-android" }
@@ -15,7 +16,7 @@ plugin-texturepacker = {module= "com.lehaine.littlekt.gradle:texturepacker", ver
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-html-js = { module = "org.jetbrains.kotlinx:kotlinx-html-js", version.ref = "kotlinx-html" }
 
-littlekt-core = { module = "com.lehaine.littlekt:core", version.ref = "littlekt" }
+rune-core = { module = "com.lehaine.rune:core", version.ref = "rune" }
 
 [bundles]
 plugins = ["plugin-android", "plugin-kotlin", "plugin-texturepacker"]

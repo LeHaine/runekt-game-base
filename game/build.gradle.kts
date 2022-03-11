@@ -93,7 +93,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(libs.littlekt.core)
+                implementation(libs.rune.core)
                 implementation(libs.kotlinx.coroutines.core)
             }
         }

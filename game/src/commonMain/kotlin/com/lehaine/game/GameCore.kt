@@ -1,6 +1,6 @@
 package com.lehaine.game
 
-import com.lehaine.game.rune.engine.Rune
+import com.lehaine.rune.engine.Rune
 import com.lehaine.game.scene.MenuScene
 import com.lehaine.littlekt.Context
 import com.lehaine.littlekt.async.KtScope

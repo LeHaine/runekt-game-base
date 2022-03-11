@@ -3,8 +3,8 @@ package com.lehaine.game.scene
 import com.lehaine.game.Assets
 import com.lehaine.game.Fx
 import com.lehaine.game.GameCore
-import com.lehaine.game.rune.engine.RuneScene
-import com.lehaine.game.rune.engine.node.fixedUpdater
+import com.lehaine.rune.engine.RuneScene
+import com.lehaine.rune.engine.node.fixedUpdater
 import com.lehaine.littlekt.Context
 import com.lehaine.littlekt.graph.node.Node
 import com.lehaine.littlekt.graph.node.component.HAlign

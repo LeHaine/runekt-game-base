@@ -1,6 +1,5 @@
 package com.lehaine.game
 
-import com.lehaine.game.rune.engine.node.particleBatch
 import com.lehaine.game.scene.GameScene
 import com.lehaine.littlekt.graphics.Color
 import com.lehaine.littlekt.graphics.ParticleSimulator
@@ -8,6 +7,7 @@ import com.lehaine.littlekt.graphics.TextureSlice
 import com.lehaine.littlekt.graphics.toFloatBits
 import com.lehaine.littlekt.math.random
 import com.lehaine.littlekt.util.seconds
+import com.lehaine.rune.engine.node.particleBatch
 import kotlin.time.Duration
 
 
@@ -16,7 +16,7 @@ class Fx(private val gameScene: GameScene) {
 
     init {
         gameScene.fxBackground.apply {
-            particleBatch {  }
+            particleBatch { }
         }
     }
 
