@@ -9,6 +9,6 @@ fun main() {
         backgroundColor = Color.DARK_GRAY
         canvasId = "canvas"
     }.start {
-        GameProcess(it)
+        GameCore(it)
     }
 }

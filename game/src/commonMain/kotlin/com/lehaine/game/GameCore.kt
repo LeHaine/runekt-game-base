@@ -1,37 +1,29 @@
 package com.lehaine.game
 
+import com.lehaine.game.rune.engine.Rune
 import com.lehaine.game.scene.MenuScene
 import com.lehaine.littlekt.Context
-import com.lehaine.littlekt.Game
-import com.lehaine.littlekt.Scene
 import com.lehaine.littlekt.async.KtScope
 import com.lehaine.littlekt.graphics.Color
-import com.lehaine.littlekt.graphics.SpriteBatch
 import com.lehaine.littlekt.graphics.gl.ClearBufferMask
 import com.lehaine.littlekt.input.Key
 import com.lehaine.littlekt.log.Logger
 import kotlinx.coroutines.launch
 
-class GameProcess(context: Context) : Game<Scene>(context) {
+class GameCore(context: Context) : Rune(context) {
 
-    private val batch = SpriteBatch(context)
 
     init {
         Logger.setLevels(Logger.Level.DEBUG)
     }
 
-    override suspend fun Context.start() {
+
+    override suspend fun Context.create() {
         Assets.createInstance(this) {
-            KtScope.launch {
-                addScene(MenuScene(this@GameProcess, batch, context))
-                setScene<MenuScene>()
-            }
+            scene = MenuScene(context)
         }
 
         onRender {
-            gl.clearColor(Color.DARK_GRAY)
-            gl.clear(ClearBufferMask.COLOR_DEPTH_BUFFER_BIT)
-
             if (input.isKeyJustPressed(Key.ESCAPE)) {
                 close()
             }
@@ -44,11 +36,8 @@ class GameProcess(context: Context) : Game<Scene>(context) {
         }
 
         onDispose {
-            batch.dispose()
             Assets.dispose()
         }
-
-        setSceneCallbacks(this)
     }
 
     companion object {

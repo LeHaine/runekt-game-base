@@ -21,7 +21,7 @@ abstract class Renderer(protected val context: Context) : Disposable {
     protected val gl: GL get() = context.gl
 
     var clearColor: Color = Color.CLEAR
-    var blendMode = BlendMode.Alpha
+    var blendMode = BlendMode.NonPreMultiplied
     protected var currentBlendMode: BlendMode? = null
 
     /**

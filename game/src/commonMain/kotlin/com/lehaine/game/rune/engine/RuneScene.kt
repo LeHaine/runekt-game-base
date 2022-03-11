@@ -15,26 +15,42 @@ open class RuneScene(context: Context, viewport: Viewport) :
     SceneGraph<String>(
         context,
         viewport,
-        SpriteBatch(context, 8196),
+        SpriteBatch(context, 8191),
         UiInputSignals(),
         InputMapController(context.input)
     ) {
 
+    var rune: Rune? = null
 
     private val renderers = mutableListOf<Renderer>()
 
-
     override fun initialize() {
         if (renderers.isEmpty()) {
-            renderers.add(DefaultRenderer().also { it.onAddedToScene(this) })
+            renderers.add(DefaultRenderer(context).also { it.onAddedToScene(this) })
         }
         super.initialize()
     }
 
-    override fun  render() {
+    override fun render() {
         renderers.forEach {
-            it.render(this)
+            it.render(batch, this)
         }
+    }
+
+    fun addRenderer(renderer: Renderer) {
+        renderers += renderer
+        renderer.onAddedToScene(this)
+    }
+
+    fun removeRenderer(renderer: Renderer) {
+        renderers -= renderer
+        renderer.dispose()
+    }
+
+    fun changeTo(scene: RuneScene) {
+        val rune = rune
+        check(rune != null) { "This scenes `Rune` property is null. This is most likely because the scene isn't set!" }
+        rune.scene = scene
     }
 
     override fun dispose() {

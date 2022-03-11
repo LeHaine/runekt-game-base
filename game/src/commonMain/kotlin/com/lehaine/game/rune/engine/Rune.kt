@@ -25,10 +25,11 @@ open class Rune(context: Context) : ContextListener(context) {
             if (_scene == null) {
                 _scene = value
                 _scene?.apply {
-                    root.initialize()
+                    rune = this@Rune
                 }
                 onSceneChanged()
-                value.begin()
+                value.initialize()
+                value.resize(context.graphics.width, context.graphics.height, true)
             } else {
                 nextScene = value
             }
@@ -36,9 +37,35 @@ open class Rune(context: Context) : ContextListener(context) {
 
     private var nextScene: RuneScene? = null
 
-    override suspend fun Context.start() {
+    final override suspend fun Context.start() {
+        create()
+        onResize { width, height ->
+            scene?.resize(width, height, true)
+        }
 
+        onRender { dt ->
+            scene?.let { _scene ->
+
+                _scene.update(dt)
+
+                nextScene?.let { _nextScene ->
+                    _scene.dispose()
+                    this@Rune._scene = _nextScene
+                    nextScene = null
+                    _nextScene.apply {
+                        rune = this@Rune
+                    }
+                    onSceneChanged()
+                    _nextScene.initialize()
+                    _nextScene.resize(context.graphics.width, context.graphics.height, true)
+                }
+            }
+            scene?.render()
+        }
     }
+
+    open suspend fun Context.create() = Unit
+
     /**
      * Called after a [RuneScene] ends, before the next [RuneScene] begins.
      */

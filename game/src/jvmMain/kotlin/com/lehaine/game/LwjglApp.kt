@@ -10,6 +10,6 @@ fun main() {
         backgroundColor = Color.DARK_GRAY
         title = "LittleKt Game Template"
     }.start {
-        GameProcess(it)
+        GameCore(it)
     }
 }
