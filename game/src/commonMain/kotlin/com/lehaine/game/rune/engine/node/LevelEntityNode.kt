@@ -1,8 +1,35 @@
-package com.lehaine.game.engine.nodes
+package com.lehaine.game.rune.engine.node
 
+import com.lehaine.game.rune.engine.GameLevel
+import com.lehaine.littlekt.graph.SceneGraph
+import com.lehaine.littlekt.graph.node.Node
+import com.lehaine.littlekt.graph.node.addTo
+import com.lehaine.littlekt.graph.node.annotation.SceneGraphDslMarker
 import com.lehaine.littlekt.graphics.tilemap.ldtk.LDtkEntity
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 import kotlin.math.floor
 
+@OptIn(ExperimentalContracts::class)
+inline fun Node.levelEntity(
+    level: GameLevel<*>,
+    gridCellSize: Int,
+    callback: @SceneGraphDslMarker LevelEntityNode.() -> Unit = {}
+): LevelEntityNode {
+    contract { callsInPlace(callback, InvocationKind.EXACTLY_ONCE) }
+    return LevelEntityNode(level, gridCellSize).also(callback).addTo(this)
+}
+
+@OptIn(ExperimentalContracts::class)
+inline fun SceneGraph<*>.levelEntity(
+    level: GameLevel<*>,
+    gridCellSize: Int,
+    callback: @SceneGraphDslMarker LevelEntityNode.() -> Unit = {}
+): LevelEntityNode {
+    contract { callsInPlace(callback, InvocationKind.EXACTLY_ONCE) }
+    return root.levelEntity(level, gridCellSize, callback)
+}
 
 open class LevelEntityNode(
     protected open val level: GameLevel<*>,

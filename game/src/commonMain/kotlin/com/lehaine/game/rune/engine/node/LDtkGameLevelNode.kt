@@ -1,11 +1,41 @@
-package com.lehaine.game.engine.nodes
+package com.lehaine.game.rune.engine.node
 
+import com.lehaine.game.rune.engine.GameLevel
+import com.lehaine.littlekt.graph.SceneGraph
+import com.lehaine.littlekt.graph.node.Node
+import com.lehaine.littlekt.graph.node.addTo
+import com.lehaine.littlekt.graph.node.annotation.SceneGraphDslMarker
+import com.lehaine.littlekt.graph.node.node2d.Node2D
+import com.lehaine.littlekt.graphics.Batch
+import com.lehaine.littlekt.graphics.Camera
 import com.lehaine.littlekt.graphics.tilemap.ldtk.LDtkIntGridLayer
 import com.lehaine.littlekt.graphics.tilemap.ldtk.LDtkLevel
 import com.lehaine.littlekt.math.clamp
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 
+@OptIn(ExperimentalContracts::class)
+inline fun <LevelMark> Node.ldtkLevel(
+    level: LDtkLevel,
+    callback: @SceneGraphDslMarker LDtkGameLevelNode<LevelMark>.() -> Unit = {}
+): LDtkGameLevelNode<LevelMark> {
+    contract { callsInPlace(callback, InvocationKind.EXACTLY_ONCE) }
+    return LDtkGameLevelNode<LevelMark>(level).also(callback).addTo(this)
+}
 
-abstract class LDtkGameLevel<LevelMark>(var level: LDtkLevel) : GameLevel<LevelMark>() {
+@OptIn(ExperimentalContracts::class)
+inline fun <LevelMark> SceneGraph<*>.ldtkLevel(
+    level: LDtkLevel,
+    callback: @SceneGraphDslMarker LDtkGameLevelNode<LevelMark>.() -> Unit = {}
+): LDtkGameLevelNode<LevelMark> {
+    contract { callsInPlace(callback, InvocationKind.EXACTLY_ONCE) }
+    return root.ldtkLevel(level, callback)
+}
+
+open class LDtkGameLevelNode<LevelMark>(var level: LDtkLevel) : Node2D(), GameLevel<LevelMark> {
+    override var gridSize: Int = 16
+
     val levelWidth get() = level["Collisions"].gridWidth
     val levelHeight get() = level["Collisions"].gridHeight
 
@@ -48,5 +78,9 @@ abstract class LDtkGameLevel<LevelMark>(var level: LDtkLevel) : GameLevel<LevelM
 
     // set level marks at start of level creation to react to certain tiles
     protected open fun createLevelMarks() = Unit
+
+    override fun render(batch: Batch, camera: Camera) {
+        level.render(batch, camera, globalX, globalY)
+    }
 
 }

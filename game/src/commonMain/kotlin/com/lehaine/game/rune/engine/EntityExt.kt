@@ -1,6 +1,6 @@
-package com.lehaine.game.engine
+package com.lehaine.game.rune.engine
 
-import com.lehaine.game.engine.nodes.EntityNode
+import com.lehaine.game.rune.engine.node.EntityNode
 import com.lehaine.littlekt.math.castRay
 import com.lehaine.littlekt.math.dist
 import kotlin.math.atan2

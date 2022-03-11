@@ -12,7 +12,7 @@ import com.lehaine.littlekt.input.Key
 import com.lehaine.littlekt.log.Logger
 import kotlinx.coroutines.launch
 
-class Game(context: Context) : Game<Scene>(context) {
+class GameProcess(context: Context) : Game<Scene>(context) {
 
     private val batch = SpriteBatch(context)
 
@@ -23,7 +23,7 @@ class Game(context: Context) : Game<Scene>(context) {
     override suspend fun Context.start() {
         Assets.createInstance(this) {
             KtScope.launch {
-                addScene(MenuScene(this@Game, batch, context))
+                addScene(MenuScene(this@GameProcess, batch, context))
                 setScene<MenuScene>()
             }
         }

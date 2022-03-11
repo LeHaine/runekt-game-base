@@ -1,8 +1,7 @@
 package com.lehaine.game.scene
 
 import com.lehaine.game.Assets
-import com.lehaine.game.Game
-import com.lehaine.game.engine.BaseScene
+import com.lehaine.game.GameProcess
 import com.lehaine.littlekt.Context
 import com.lehaine.littlekt.Scene
 import com.lehaine.littlekt.async.KtScope
@@ -19,11 +18,11 @@ import kotlin.time.Duration
 
 
 class MenuScene(
-    private val game: Game,
+    private val game: GameProcess,
     private val batch: SpriteBatch,
     context: Context
 ) : Scene(context) {
-    private val graph = sceneGraph(context, ExtendViewport(Game.VIRTUAL_WIDTH, Game.VIRTUAL_HEIGHT), batch) {
+    private val graph = sceneGraph(context, ExtendViewport(GameProcess.VIRTUAL_WIDTH, GameProcess.VIRTUAL_HEIGHT), batch) {
         centerContainer {
             anchorRight = 1f
             anchorBottom = 1f

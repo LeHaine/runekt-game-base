@@ -1,4 +1,4 @@
-package com.lehaine.game.engine
+package com.lehaine.game.rune.engine
 
 import com.lehaine.littlekt.util.datastructure.Pool
 import kotlin.time.Duration

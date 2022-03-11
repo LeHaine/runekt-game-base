@@ -1,6 +1,6 @@
-package com.lehaine.game.engine
+package com.lehaine.game.rune.engine
 
-import com.lehaine.game.engine.nodes.EntityNode
+import com.lehaine.game.rune.engine.node.EntityNode
 import com.lehaine.littlekt.graphics.OrthographicCamera
 import com.lehaine.littlekt.math.Rect
 import com.lehaine.littlekt.math.clamp

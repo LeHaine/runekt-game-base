@@ -1,25 +1,32 @@
 package com.lehaine.game
 
-import com.lehaine.littlekt.graphics.*
+import com.lehaine.game.rune.engine.node.particleBatch
+import com.lehaine.game.scene.GameScene
+import com.lehaine.littlekt.graphics.Color
+import com.lehaine.littlekt.graphics.ParticleSimulator
+import com.lehaine.littlekt.graphics.TextureSlice
+import com.lehaine.littlekt.graphics.toFloatBits
 import com.lehaine.littlekt.math.random
 import com.lehaine.littlekt.util.seconds
 import kotlin.time.Duration
 
 
-class Fx(private val atlas: TextureAtlas) {
+class Fx(private val gameScene: GameScene) {
     private val particleSimulator = ParticleSimulator(2048)
+
+    init {
+        gameScene.fxBackground.apply {
+            particleBatch {  }
+        }
+    }
 
     fun update(dt: Duration, tmod: Float = -1f) {
         particleSimulator.update(dt, tmod)
     }
 
-    fun render(batch: SpriteBatch) {
-        particleSimulator.draw(batch)
-    }
-
     fun runDust(x: Float, y: Float, dir: Int) {
         create(5) {
-            val p = alloc(atlas.getByPrefix("fxSmallCircle").slice, x, y)
+            val p = alloc(Assets.atlas.getByPrefix("fxSmallCircle").slice, x, y)
             p.scale((0.15f..0.25f).random())
             p.color.set(DUST_COLOR).also { p.colorBits = DUST_COLOR_BITS }
             p.xDelta = (0.25f..0.75f).random() * dir

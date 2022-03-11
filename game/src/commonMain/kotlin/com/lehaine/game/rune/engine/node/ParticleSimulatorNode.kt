@@ -1,5 +1,9 @@
-package com.lehaine.game.engine.nodes
+package com.lehaine.game.rune.engine.node
 
+import com.lehaine.littlekt.graph.SceneGraph
+import com.lehaine.littlekt.graph.node.Node
+import com.lehaine.littlekt.graph.node.addTo
+import com.lehaine.littlekt.graph.node.annotation.SceneGraphDslMarker
 import com.lehaine.littlekt.graph.node.node2d.Node2D
 import com.lehaine.littlekt.graphics.Batch
 import com.lehaine.littlekt.graphics.Camera
@@ -8,8 +12,23 @@ import com.lehaine.littlekt.graphics.TextureSlice
 import com.lehaine.littlekt.math.Rect
 import com.lehaine.littlekt.util.calculateViewBounds
 import com.lehaine.littlekt.util.fastForEach
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 
-class ParticleNode : Node2D() {
+@OptIn(ExperimentalContracts::class)
+inline fun Node.particleSimulator(callback: @SceneGraphDslMarker ParticleSimulatorNode.() -> Unit = {}): ParticleSimulatorNode {
+    contract { callsInPlace(callback, InvocationKind.EXACTLY_ONCE) }
+    return ParticleSimulatorNode().also(callback).addTo(this)
+}
+
+@OptIn(ExperimentalContracts::class)
+inline fun SceneGraph<*>.particleSimulator(callback: @SceneGraphDslMarker ParticleSimulatorNode.() -> Unit = {}): ParticleSimulatorNode {
+    contract { callsInPlace(callback, InvocationKind.EXACTLY_ONCE) }
+    return root.particleSimulator(callback)
+}
+
+class ParticleSimulatorNode : Node2D() {
 
     var maxParticles = 2048
 

@@ -1,7 +1,7 @@
-package com.lehaine.game.engine.nodes
+package com.lehaine.game.rune.engine.node
 
-import com.lehaine.game.engine.CooldownComponent
-import com.lehaine.game.engine.distPxTo
+import com.lehaine.game.rune.engine.CooldownComponent
+import com.lehaine.game.rune.engine.distPxTo
 import com.lehaine.littlekt.graph.SceneGraph
 import com.lehaine.littlekt.graph.node.Node
 import com.lehaine.littlekt.graph.node.addTo
@@ -10,17 +10,26 @@ import com.lehaine.littlekt.graph.node.node2d.Node2D
 import com.lehaine.littlekt.graphics.*
 import com.lehaine.littlekt.math.interpolate
 import com.lehaine.littlekt.util.*
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 import kotlin.math.abs
 import kotlin.math.ceil
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.time.Duration
 
-inline fun Node.entity(gridCellSize: Int, callback: @SceneGraphDslMarker EntityNode.() -> Unit = {}) =
-    EntityNode(gridCellSize).also(callback).addTo(this)
+@OptIn(ExperimentalContracts::class)
+inline fun Node.entity(gridCellSize: Int, callback: @SceneGraphDslMarker EntityNode.() -> Unit = {}): EntityNode {
+    contract { callsInPlace(callback, InvocationKind.EXACTLY_ONCE) }
+    return EntityNode(gridCellSize).also(callback).addTo(this)
+}
 
-inline fun SceneGraph<*>.entity(gridCellSize: Int, callback: @SceneGraphDslMarker EntityNode.() -> Unit = {}) =
-    root.entity(gridCellSize, callback)
+@OptIn(ExperimentalContracts::class)
+inline fun SceneGraph<*>.entity(gridCellSize: Int, callback: @SceneGraphDslMarker EntityNode.() -> Unit = {}): EntityNode {
+    contract { callsInPlace(callback, InvocationKind.EXACTLY_ONCE) }
+    return root.entity(gridCellSize, callback)
+}
 
 open class EntityNode(val gridCellSize: Int) : Node2D() {
     var cx: Int = 0
@@ -133,13 +142,13 @@ open class EntityNode(val gridCellSize: Int) : Node2D() {
         var current: Node? = this
         while (current != null) {
             val parent = current.parent
-            if(parent is FixedUpdaterNode) {
+            if (parent is FixedUpdaterNode) {
                 fixedUpdater = parent
                 return
             } else {
                 current = parent
             }
-            if(current != null && current == scene?.root) {
+            if (current != null && current == scene?.root) {
                 error("Unable to find a FixedUpdater for $name. Ensure that an EntityNode is a descendant of a FixedUpdaterNode.")
             }
         }

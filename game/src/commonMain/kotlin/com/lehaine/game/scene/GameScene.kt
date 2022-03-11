@@ -2,58 +2,85 @@ package com.lehaine.game.scene
 
 import com.lehaine.game.Assets
 import com.lehaine.game.Fx
-import com.lehaine.game.Game
-import com.lehaine.game.engine.BaseScene
-import com.lehaine.game.engine.GameCamera
-import com.lehaine.game.engine.addTmodUpdater
-import com.lehaine.game.engine.nodes.entity
-import com.lehaine.game.engine.nodes.fixedUpdater
-import com.lehaine.game.engine.postUpdate
+import com.lehaine.game.GameProcess
+import com.lehaine.game.rune.engine.BaseScene
+import com.lehaine.game.rune.engine.GameCamera
+import com.lehaine.game.rune.engine.addTmodUpdater
+import com.lehaine.game.rune.engine.node.fixedUpdater
+import com.lehaine.game.rune.engine.postUpdate
 import com.lehaine.littlekt.Context
+import com.lehaine.littlekt.graph.node.Node
 import com.lehaine.littlekt.graph.node.component.HAlign
 import com.lehaine.littlekt.graph.node.component.VAlign
+import com.lehaine.littlekt.graph.node.node
+import com.lehaine.littlekt.graph.node.node2d.ui.Control
 import com.lehaine.littlekt.graph.node.node2d.ui.control
 import com.lehaine.littlekt.graph.node.node2d.ui.label
 import com.lehaine.littlekt.graph.sceneGraph
 import com.lehaine.littlekt.graphics.SpriteBatch
-import com.lehaine.littlekt.graphics.TextureAtlas
 import com.lehaine.littlekt.graphics.use
 import com.lehaine.littlekt.util.viewport.ExtendViewport
 
 
 class GameScene(private val batch: SpriteBatch, context: Context) : BaseScene(context) {
-    private val atlas: TextureAtlas get() = Assets.atlas
-
-    private val camera = GameCamera(Game.VIRTUAL_WIDTH, Game.VIRTUAL_HEIGHT).apply {
-        viewport = ExtendViewport(Game.VIRTUAL_WIDTH, Game.VIRTUAL_HEIGHT)
+    val camera = GameCamera(GameProcess.VIRTUAL_WIDTH, GameProcess.VIRTUAL_HEIGHT).apply {
+        viewport = ExtendViewport(GameProcess.VIRTUAL_WIDTH, GameProcess.VIRTUAL_HEIGHT)
     }
-    private val fx = Fx(Assets.atlas)
-    private val sceneGraph = sceneGraph(context, ExtendViewport(Game.VIRTUAL_WIDTH, Game.VIRTUAL_HEIGHT), batch) {
-        fixedUpdater {
-            timesPerSecond = 30
+    val background: Node
+    val fxBackground: Node
+    val main: Node
+    val foreground: Node
+    val fxForeground: Node
+    val top: Node
+    val ui: Control
 
-            entity(16) {
-                onFixedUpdate += {
-                    // ..
+    private val sceneGraph =
+        sceneGraph(context, ExtendViewport(GameProcess.VIRTUAL_WIDTH, GameProcess.VIRTUAL_HEIGHT), batch) {
+            fixedUpdater {
+                timesPerSecond = 30
+
+                background = node {
+                    name = "Background"
+                }
+
+                fxBackground = node {
+                    name = "FX Background"
+                }
+
+                main = node {
+                    name = "Main"
+                }
+
+                foreground = node {
+                    name = "Foreground"
+                }
+
+                fxForeground = node {
+                    name = "FX Foreground"
+                }
+
+                top = node {
+                    name = "Top"
                 }
             }
-        }
 
-        control {
-            name = "UI"
-            anchorRight = 1f
-            anchorBottom = 1f
-
-            label {
-                text = "TODO: Implement game logic"
-                font = Assets.pixelFont
+            ui = control {
+                name = "UI"
                 anchorRight = 1f
                 anchorBottom = 1f
-                verticalAlign = VAlign.CENTER
-                horizontalAlign = HAlign.CENTER
+
+                label {
+                    text = "TODO: Implement game logic"
+                    font = Assets.pixelFont
+                    anchorRight = 1f
+                    anchorBottom = 1f
+                    verticalAlign = VAlign.CENTER
+                    horizontalAlign = HAlign.CENTER
+                }
             }
-        }
-    }.also { it.initialize() }
+        }.also { it.initialize() }
+
+    val fx = Fx(this)
 
     init {
         addTmodUpdater(60) { dt, tmod ->
@@ -62,7 +89,7 @@ class GameScene(private val batch: SpriteBatch, context: Context) : BaseScene(co
             camera.update(dt)
             camera.viewport.apply(context)
             batch.use(camera.viewProjection) {
-                fx.render(it)
+               // render
             }
 
             sceneGraph.update(dt)

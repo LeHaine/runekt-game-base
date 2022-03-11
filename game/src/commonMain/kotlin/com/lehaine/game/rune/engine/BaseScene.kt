@@ -1,4 +1,4 @@
-package com.lehaine.game.engine
+package com.lehaine.game.rune.engine
 
 import com.lehaine.littlekt.Context
 import com.lehaine.littlekt.Scene

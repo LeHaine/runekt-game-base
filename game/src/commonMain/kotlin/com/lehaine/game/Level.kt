@@ -1,9 +1,9 @@
 package com.lehaine.game
 
-import com.lehaine.game.engine.nodes.LDtkGameLevel
+import com.lehaine.game.rune.engine.node.LDtkGameLevelNode
 import com.lehaine.littlekt.graphics.tilemap.ldtk.LDtkLevel
 
-class Level(level: LDtkLevel) : LDtkGameLevel<Level.LevelMark>(level) {
+class Level(level: LDtkLevel) : LDtkGameLevelNode<Level.LevelMark>(level) {
     override var gridSize: Int = 8
 
     init {

@@ -1,4 +1,4 @@
-package com.lehaine.game.engine.nodes
+package com.lehaine.game.rune.engine.node
 
 import com.lehaine.littlekt.graph.SceneGraph
 import com.lehaine.littlekt.graph.node.Node
@@ -6,16 +6,23 @@ import com.lehaine.littlekt.graph.node.addTo
 import com.lehaine.littlekt.graph.node.annotation.SceneGraphDslMarker
 import com.lehaine.littlekt.util.milliseconds
 import com.lehaine.littlekt.util.seconds
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 
+@OptIn(ExperimentalContracts::class)
+inline fun Node.fixedUpdater(callback: @SceneGraphDslMarker FixedUpdaterNode.() -> Unit = {}): FixedUpdaterNode {
+    contract { callsInPlace(callback, InvocationKind.EXACTLY_ONCE) }
+    return FixedUpdaterNode().also(callback).addTo(this)
+}
 
-inline fun Node.fixedUpdater(callback: @SceneGraphDslMarker FixedUpdaterNode.() -> Unit = {}) =
-    FixedUpdaterNode().also(callback).addTo(this)
-
-
-inline fun SceneGraph<*>.fixedUpdater(callback: @SceneGraphDslMarker FixedUpdaterNode.() -> Unit = {}) =
-    root.fixedUpdater(callback)
+@OptIn(ExperimentalContracts::class)
+inline fun SceneGraph<*>.fixedUpdater(callback: @SceneGraphDslMarker FixedUpdaterNode.() -> Unit = {}): FixedUpdaterNode {
+    contract { callsInPlace(callback, InvocationKind.EXACTLY_ONCE) }
+    return root.fixedUpdater(callback)
+}
 
 
 class FixedUpdaterNode : Node() {
