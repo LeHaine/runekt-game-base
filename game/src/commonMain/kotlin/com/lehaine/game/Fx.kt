@@ -7,16 +7,31 @@ import com.lehaine.littlekt.graphics.TextureSlice
 import com.lehaine.littlekt.graphics.toFloatBits
 import com.lehaine.littlekt.math.random
 import com.lehaine.littlekt.util.seconds
-import com.lehaine.rune.engine.node.particleBatch
+import com.lehaine.rune.engine.BlendMode
+import com.lehaine.rune.engine.node.node2d.renderable.ParticleBatchNode
 import kotlin.time.Duration
 
 
-class Fx(private val gameScene: GameScene) {
+class Fx(gameScene: GameScene) {
     private val particleSimulator = ParticleSimulator(2048)
+
+    private val bgAdd = ParticleBatchNode().apply {
+        blendMode = BlendMode.Add
+    }
+    private val bgNormal = ParticleBatchNode()
+    private val topAdd = ParticleBatchNode().apply {
+        blendMode = BlendMode.Add
+    }
+    private val topNormal = ParticleBatchNode()
 
     init {
         gameScene.fxBackground.apply {
-            particleBatch { }
+            addChild(bgAdd)
+            addChild(bgNormal)
+        }
+        gameScene.fxForeground.apply {
+            addChild(topNormal)
+            addChild(topAdd)
         }
     }
 
@@ -26,7 +41,7 @@ class Fx(private val gameScene: GameScene) {
 
     fun runDust(x: Float, y: Float, dir: Int) {
         create(5) {
-            val p = alloc(Assets.atlas.getByPrefix("fxSmallCircle").slice, x, y)
+            val p = allocTopNormal(Assets.atlas.getByPrefix("fxSmallCircle").slice, x, y)
             p.scale((0.15f..0.25f).random())
             p.color.set(DUST_COLOR).also { p.colorBits = DUST_COLOR_BITS }
             p.xDelta = (0.25f..0.75f).random() * dir
@@ -36,7 +51,17 @@ class Fx(private val gameScene: GameScene) {
         }
     }
 
-    private fun alloc(slice: TextureSlice, x: Float, y: Float) = particleSimulator.alloc(slice, x, y)
+    private fun allocTopNormal(slice: TextureSlice, x: Float, y: Float) =
+        particleSimulator.alloc(slice, x, y).also { topNormal.add(it) }
+
+    private fun allocTopAdd(slice: TextureSlice, x: Float, y: Float) =
+        particleSimulator.alloc(slice, x, y).also { topAdd.add(it) }
+
+    private fun allocBogNormal(slice: TextureSlice, x: Float, y: Float) =
+        particleSimulator.alloc(slice, x, y).also { bgNormal.add(it) }
+
+    private fun allocBogAdd(slice: TextureSlice, x: Float, y: Float) =
+        particleSimulator.alloc(slice, x, y).also { bgAdd.add(it) }
 
     private fun create(num: Int, createParticle: (index: Int) -> Unit) {
         for (i in 0 until num) {

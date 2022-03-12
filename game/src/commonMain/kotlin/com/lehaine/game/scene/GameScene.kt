@@ -3,8 +3,6 @@ package com.lehaine.game.scene
 import com.lehaine.game.Assets
 import com.lehaine.game.Fx
 import com.lehaine.game.GameCore
-import com.lehaine.rune.engine.RuneScene
-import com.lehaine.rune.engine.node.fixedUpdater
 import com.lehaine.littlekt.Context
 import com.lehaine.littlekt.graph.node.Node
 import com.lehaine.littlekt.graph.node.component.HAlign
@@ -13,6 +11,9 @@ import com.lehaine.littlekt.graph.node.node
 import com.lehaine.littlekt.graph.node.node2d.ui.Control
 import com.lehaine.littlekt.graph.node.node2d.ui.label
 import com.lehaine.littlekt.util.viewport.ExtendViewport
+import com.lehaine.rune.engine.RuneScene
+import com.lehaine.rune.engine.node.fixedUpdater
+import kotlin.time.Duration
 
 
 class GameScene(context: Context) :
@@ -70,5 +71,10 @@ class GameScene(context: Context) :
                 horizontalAlign = HAlign.CENTER
             }
         }
+    }
+
+    override fun update(dt: Duration) {
+        fx.update(dt)
+        super.update(dt)
     }
 }
