@@ -1,28 +1,33 @@
 package com.lehaine.game
 
 import com.lehaine.game.scene.GameScene
+import com.lehaine.littlekt.graph.node.render.BlendMode
+import com.lehaine.littlekt.graph.node.render.Material
 import com.lehaine.littlekt.graphics.Color
 import com.lehaine.littlekt.graphics.ParticleSimulator
 import com.lehaine.littlekt.graphics.TextureSlice
 import com.lehaine.littlekt.graphics.toFloatBits
 import com.lehaine.littlekt.math.random
 import com.lehaine.littlekt.util.seconds
-import com.lehaine.rune.engine.BlendMode
-import com.lehaine.rune.engine.node.node2d.renderable.ParticleBatchNode
+import com.lehaine.rune.engine.node.renderable.ParticleBatch
 import kotlin.time.Duration
 
 
 class Fx(gameScene: GameScene) {
     private val particleSimulator = ParticleSimulator(2048)
 
-    private val bgAdd = ParticleBatchNode().apply {
-        blendMode = BlendMode.Add
+    private val bgAdd = ParticleBatch().apply {
+        material = Material().apply {
+            blendMode = BlendMode.Add
+        }
     }
-    private val bgNormal = ParticleBatchNode()
-    private val topAdd = ParticleBatchNode().apply {
-        blendMode = BlendMode.Add
+    private val bgNormal = ParticleBatch()
+    private val topAdd = ParticleBatch().apply {
+        material = Material().apply {
+            blendMode = BlendMode.Add
+        }
     }
-    private val topNormal = ParticleBatchNode()
+    private val topNormal = ParticleBatch()
 
     init {
         gameScene.fxBackground.apply {

@@ -5,14 +5,20 @@ import com.lehaine.game.Fx
 import com.lehaine.game.GameCore
 import com.lehaine.littlekt.Context
 import com.lehaine.littlekt.graph.node.Node
+import com.lehaine.littlekt.graph.node.canvasLayer
 import com.lehaine.littlekt.graph.node.component.HAlign
 import com.lehaine.littlekt.graph.node.component.VAlign
 import com.lehaine.littlekt.graph.node.node
-import com.lehaine.littlekt.graph.node.node2d.ui.Control
-import com.lehaine.littlekt.graph.node.node2d.ui.label
+import com.lehaine.littlekt.graph.node.ui.Control
+import com.lehaine.littlekt.graph.node.ui.label
+import com.lehaine.littlekt.input.Key
 import com.lehaine.littlekt.util.viewport.ExtendViewport
 import com.lehaine.rune.engine.RuneScene
-import com.lehaine.rune.engine.node.fixedUpdater
+import com.lehaine.rune.engine.node.EntityCamera2D
+import com.lehaine.rune.engine.node.entityCamera2D
+import com.lehaine.rune.engine.node.pixelPerfectSlice
+import com.lehaine.rune.engine.node.pixelSmoothFrameBuffer
+import com.lehaine.rune.engine.node.renderable.ldtkLevel
 import kotlin.time.Duration
 
 
@@ -28,10 +34,8 @@ class GameScene(context: Context) :
 
     val fx = Fx(this)
 
-    override fun Node.initialize() {
-        fixedUpdater {
-            timesPerSecond = 30
-
+    override suspend fun Node.initialize() {
+        canvasLayer {
             node(background) {
                 name = "Background"
             }
@@ -42,6 +46,33 @@ class GameScene(context: Context) :
 
             node(main) {
                 name = "Main"
+                val entityCamera: EntityCamera2D
+
+                val fbo = pixelSmoothFrameBuffer {
+                    // TODO load level here
+
+                    // TODO load player here
+                    entityCamera = entityCamera2D {
+                        camera = fboCamera
+
+                        onUpdate += {
+                            if (input.isKeyJustPressed(Key.Z)) {
+                                targetZoom = 0.5f
+                            }
+                            if (input.isKeyJustPressed(Key.X)) {
+                                targetZoom = 1f
+                            }
+                        }
+                    }
+                }
+
+                pixelPerfectSlice {
+                    this.fbo = fbo
+                    onUpdate += {
+                        scaledDistX = entityCamera.scaledDistX
+                        scaledDistY = entityCamera.scaledDistY
+                    }
+                }
             }
 
             node(foreground) {
@@ -55,6 +86,7 @@ class GameScene(context: Context) :
             node(top) {
                 name = "Top"
             }
+
         }
 
         node(ui) {

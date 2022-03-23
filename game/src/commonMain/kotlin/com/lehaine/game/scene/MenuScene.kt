@@ -5,10 +5,10 @@ import com.lehaine.game.GameCore
 import com.lehaine.littlekt.Context
 import com.lehaine.littlekt.graph.node.Node
 import com.lehaine.littlekt.graph.node.component.HAlign
-import com.lehaine.littlekt.graph.node.node2d.ui.button
-import com.lehaine.littlekt.graph.node.node2d.ui.centerContainer
-import com.lehaine.littlekt.graph.node.node2d.ui.label
-import com.lehaine.littlekt.graph.node.node2d.ui.vBoxContainer
+import com.lehaine.littlekt.graph.node.ui.button
+import com.lehaine.littlekt.graph.node.ui.centerContainer
+import com.lehaine.littlekt.graph.node.ui.label
+import com.lehaine.littlekt.graph.node.ui.vBoxContainer
 import com.lehaine.littlekt.util.viewport.ExtendViewport
 import com.lehaine.rune.engine.RuneScene
 
@@ -17,7 +17,7 @@ class MenuScene(
     context: Context
 ) : RuneScene(context, ExtendViewport(GameCore.VIRTUAL_WIDTH, GameCore.VIRTUAL_HEIGHT)) {
 
-    override fun Node.initialize() {
+    override suspend fun Node.initialize() {
         centerContainer {
             anchorRight = 1f
             anchorBottom = 1f
