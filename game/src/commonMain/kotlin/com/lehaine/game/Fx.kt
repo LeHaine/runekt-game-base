@@ -13,23 +13,35 @@ import com.lehaine.rune.engine.node.renderable.ParticleBatch
 import kotlin.time.Duration
 
 
-class Fx(gameScene: GameScene) {
+class Fx(val gameScene: GameScene) {
     private val particleSimulator = ParticleSimulator(2048)
 
-    private val bgAdd = ParticleBatch().apply {
+    private var bgAdd = ParticleBatch().apply {
         material = Material().apply {
             blendMode = BlendMode.Add
         }
     }
-    private val bgNormal = ParticleBatch()
-    private val topAdd = ParticleBatch().apply {
+    private var bgNormal = ParticleBatch()
+    private var topAdd = ParticleBatch().apply {
         material = Material().apply {
             blendMode = BlendMode.Add
         }
     }
-    private val topNormal = ParticleBatch()
+    private var topNormal = ParticleBatch()
 
-    init {
+    fun createParticleBatchNodes() {
+        bgAdd = ParticleBatch().apply {
+            material = Material().apply {
+                blendMode = BlendMode.Add
+            }
+        }
+        bgNormal = ParticleBatch()
+        topAdd = ParticleBatch().apply {
+            material = Material().apply {
+                blendMode = BlendMode.Add
+            }
+        }
+        topNormal = ParticleBatch()
         gameScene.fxBackground.apply {
             addChild(bgAdd)
             addChild(bgNormal)
@@ -39,6 +51,7 @@ class Fx(gameScene: GameScene) {
             addChild(topAdd)
         }
     }
+
 
     fun update(dt: Duration, tmod: Float = -1f) {
         particleSimulator.update(dt, tmod)

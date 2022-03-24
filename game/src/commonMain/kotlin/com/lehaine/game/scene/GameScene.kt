@@ -10,6 +10,7 @@ import com.lehaine.littlekt.graph.node.component.HAlign
 import com.lehaine.littlekt.graph.node.component.VAlign
 import com.lehaine.littlekt.graph.node.node
 import com.lehaine.littlekt.graph.node.ui.Control
+import com.lehaine.littlekt.graph.node.ui.control
 import com.lehaine.littlekt.graph.node.ui.label
 import com.lehaine.littlekt.input.Key
 import com.lehaine.littlekt.util.viewport.ExtendViewport
@@ -18,40 +19,44 @@ import com.lehaine.rune.engine.node.EntityCamera2D
 import com.lehaine.rune.engine.node.entityCamera2D
 import com.lehaine.rune.engine.node.pixelPerfectSlice
 import com.lehaine.rune.engine.node.pixelSmoothFrameBuffer
-import com.lehaine.rune.engine.node.renderable.ldtkLevel
 import kotlin.time.Duration
 
 
 class GameScene(context: Context) :
     RuneScene(context, ExtendViewport(GameCore.VIRTUAL_WIDTH, GameCore.VIRTUAL_HEIGHT)) {
-    val background: Node = Node()
-    val fxBackground: Node = Node()
-    val main: Node = Node()
-    val foreground: Node = Node()
-    val fxForeground: Node = Node()
-    val top: Node = Node()
-    val ui: Control = Control()
+    lateinit var background: Node
+    lateinit var fxBackground: Node
+    lateinit var main: Node
+    lateinit var foreground: Node
+    lateinit var fxForeground: Node
+    lateinit var top: Node
+    lateinit var ui: Control
 
     val fx = Fx(this)
 
     override suspend fun Node.initialize() {
+        createNodes()
+    }
+
+    private fun Node.createNodes() {
         canvasLayer {
-            node(background) {
+            background = node {
                 name = "Background"
             }
 
-            node(fxBackground) {
+            fxBackground = node {
                 name = "FX Background"
             }
 
-            node(main) {
+            main = node {
                 name = "Main"
                 val entityCamera: EntityCamera2D
 
                 val fbo = pixelSmoothFrameBuffer {
-                    // TODO load level here
+                    // TODO load level
 
-                    // TODO load player here
+                    // TODO create entities
+
                     entityCamera = entityCamera2D {
                         camera = fboCamera
 
@@ -75,21 +80,21 @@ class GameScene(context: Context) :
                 }
             }
 
-            node(foreground) {
+            foreground = node {
                 name = "Foreground"
             }
 
-            node(fxForeground) {
+            fxForeground = node {
                 name = "FX Foreground"
             }
 
-            node(top) {
+            top = node {
                 name = "Top"
             }
 
         }
 
-        node(ui) {
+        ui = control {
             name = "UI"
             anchorRight = 1f
             anchorBottom = 1f
@@ -103,10 +108,17 @@ class GameScene(context: Context) :
                 horizontalAlign = HAlign.CENTER
             }
         }
+        fx.createParticleBatchNodes()
     }
 
     override fun update(dt: Duration) {
         fx.update(dt)
         super.update(dt)
+
+        if (input.isKeyJustPressed(Key.R)) {
+            destroyRoot()
+            root.createNodes()
+            resize(graphics.width, graphics.height)
+        }
     }
 }
