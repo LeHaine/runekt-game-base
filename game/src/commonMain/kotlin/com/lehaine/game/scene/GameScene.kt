@@ -1,8 +1,8 @@
 package com.lehaine.game.scene
 
 import com.lehaine.game.Assets
+import com.lehaine.game.Config
 import com.lehaine.game.Fx
-import com.lehaine.game.GameCore
 import com.lehaine.littlekt.Context
 import com.lehaine.littlekt.graph.node.Node
 import com.lehaine.littlekt.graph.node.canvasLayer
@@ -23,7 +23,7 @@ import kotlin.time.Duration
 
 
 class GameScene(context: Context) :
-    RuneScene(context, ExtendViewport(GameCore.VIRTUAL_WIDTH, GameCore.VIRTUAL_HEIGHT)) {
+    RuneScene(context, ExtendViewport(Config.VIRTUAL_WIDTH, Config.VIRTUAL_HEIGHT)) {
     lateinit var background: Node
     lateinit var fxBackground: Node
     lateinit var main: Node
@@ -40,56 +40,62 @@ class GameScene(context: Context) :
 
     private fun Node.createNodes() {
         canvasLayer {
-            background = node {
-                name = "Background"
-            }
+            val entityCamera: EntityCamera2D
 
-            fxBackground = node {
-                name = "FX Background"
-            }
+            val fbo = pixelSmoothFrameBuffer {
+                entityCamera = entityCamera2D {
+                    // TODO set viewbounds
+                    camera = canvasCamera
 
-            main = node {
-                name = "Main"
-                val entityCamera: EntityCamera2D
-
-                val fbo = pixelSmoothFrameBuffer {
-                    // TODO load level
-
-                    // TODO create entities
-
-                    entityCamera = entityCamera2D {
-                        camera = fboCamera
-
-                        onUpdate += {
-                            if (input.isKeyJustPressed(Key.Z)) {
-                                targetZoom = 0.5f
-                            }
-                            if (input.isKeyJustPressed(Key.X)) {
-                                targetZoom = 1f
-                            }
+                    onUpdate += {
+                        if (input.isKeyJustPressed(Key.Z)) {
+                            targetZoom = 0.5f
+                        }
+                        if (input.isKeyJustPressed(Key.X)) {
+                            targetZoom = 1f
+                        }
+                        if (input.isKeyJustPressed(Key.C)) {
+                            targetZoom = 2f
                         }
                     }
                 }
-
-                pixelPerfectSlice {
-                    this.fbo = fbo
-                    onUpdate += {
-                        scaledDistX = entityCamera.scaledDistX
-                        scaledDistY = entityCamera.scaledDistY
-                    }
+                background = node {
+                    name = "Background"
                 }
+
+                fxBackground = node {
+                    name = "FX Background"
+                }
+
+                main = node {
+                    name = "Main"
+
+                    // TODO create level
+
+                    // TODO create hero
+                }
+
+                foreground = node {
+                    name = "Foreground"
+                }
+
+                fxForeground = node {
+                    name = "FX Foreground"
+                }
+
+                top = node {
+                    name = "Top"
+                }
+
+                // TODO follow hero
             }
 
-            foreground = node {
-                name = "Foreground"
-            }
-
-            fxForeground = node {
-                name = "FX Foreground"
-            }
-
-            top = node {
-                name = "Top"
+            pixelPerfectSlice {
+                this.fbo = fbo
+                onUpdate += {
+                    scaledDistX = entityCamera.scaledDistX
+                    scaledDistY = entityCamera.scaledDistY
+                }
             }
 
         }
@@ -110,7 +116,6 @@ class GameScene(context: Context) :
         }
         fx.createParticleBatchNodes()
     }
-
     override fun update(dt: Duration) {
         fx.update(dt)
         super.update(dt)
@@ -119,6 +124,14 @@ class GameScene(context: Context) :
             destroyRoot()
             root.createNodes()
             resize(graphics.width, graphics.height)
+        }
+
+        if(input.isKeyJustPressed(Key.T)) {
+            println(root.treeString())
+        }
+
+        if(input.isKeyJustPressed(Key.P)) {
+            println(stats)
         }
     }
 }

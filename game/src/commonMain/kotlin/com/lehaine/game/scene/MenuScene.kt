@@ -1,7 +1,7 @@
 package com.lehaine.game.scene
 
 import com.lehaine.game.Assets
-import com.lehaine.game.GameCore
+import com.lehaine.game.Config
 import com.lehaine.littlekt.Context
 import com.lehaine.littlekt.graph.node.Node
 import com.lehaine.littlekt.graph.node.component.HAlign
@@ -15,7 +15,7 @@ import com.lehaine.rune.engine.RuneScene
 
 class MenuScene(
     context: Context
-) : RuneScene(context, ExtendViewport(GameCore.VIRTUAL_WIDTH, GameCore.VIRTUAL_HEIGHT)) {
+) : RuneScene(context, ExtendViewport(Config.VIRTUAL_WIDTH, Config.VIRTUAL_HEIGHT)) {
 
     override suspend fun Node.initialize() {
         centerContainer {

@@ -39,9 +39,4 @@ class GameCore(context: Context) : Rune(context) {
             Assets.dispose()
         }
     }
-
-    companion object {
-        val VIRTUAL_WIDTH = 480
-        val VIRTUAL_HEIGHT = 270
-    }
 }
