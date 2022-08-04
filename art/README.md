@@ -8,6 +8,7 @@ This assumes you are using **TexturePacker** for packing textures. If not, then 
 To export tags from an aseprite file:
 * Save your `*.ase` or `*.aseprite` file in the `ase/` directory
 * Run the script `./export_tags.sh` which will export all the tags in the aseprite file and place them in the `export_tiles/` directory.
+* Alternatively pass in a single file name to export all the tags in that aseprite file. `./export_tags.sh mySprite.aseprite`.
 * Run the `packTextures` gradle task from the `texturepacker` gradle plugin with the input directory pointed at `art/export_tiles/` and the output directory set to `src/commonMain/resources/` 
 
 ## Exporting tiles for use with **LDtk**
