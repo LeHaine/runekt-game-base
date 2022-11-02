@@ -1,8 +1,6 @@
 package com.lehaine.game.scene
 
-import com.lehaine.game.Assets
-import com.lehaine.game.Config
-import com.lehaine.game.Fx
+import com.lehaine.game.*
 import com.lehaine.littlekt.Context
 import com.lehaine.littlekt.graph.node.Node
 import com.lehaine.littlekt.graph.node.canvasLayer
@@ -22,8 +20,11 @@ import com.lehaine.rune.engine.node.pixelSmoothFrameBuffer
 import kotlin.time.Duration
 
 
-class GameScene(context: Context) :
-    RuneScene(context, ExtendViewport(Config.VIRTUAL_WIDTH, Config.VIRTUAL_HEIGHT)) {
+class GameScene(context: Context) : RuneScene<GameInput>(
+    context,
+    ExtendViewport(Config.VIRTUAL_WIDTH, Config.VIRTUAL_HEIGHT),
+    createUiGameInputSignals()
+) {
     lateinit var background: Node
     lateinit var fxBackground: Node
     lateinit var main: Node
@@ -116,6 +117,7 @@ class GameScene(context: Context) :
         }
         fx.createParticleBatchNodes()
     }
+
     override fun update(dt: Duration) {
         fx.update(dt)
         super.update(dt)
@@ -126,11 +128,11 @@ class GameScene(context: Context) :
             resize(graphics.width, graphics.height)
         }
 
-        if(input.isKeyJustPressed(Key.T)) {
+        if (input.isKeyJustPressed(Key.T)) {
             println(root.treeString())
         }
 
-        if(input.isKeyJustPressed(Key.P)) {
+        if (input.isKeyJustPressed(Key.P)) {
             println(stats)
         }
     }
