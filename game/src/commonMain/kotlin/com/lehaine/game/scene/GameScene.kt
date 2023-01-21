@@ -4,9 +4,9 @@ import com.lehaine.game.*
 import com.lehaine.littlekt.Context
 import com.lehaine.littlekt.graph.node.Node
 import com.lehaine.littlekt.graph.node.canvasLayer
-import com.lehaine.littlekt.graph.node.component.HAlign
-import com.lehaine.littlekt.graph.node.component.VAlign
 import com.lehaine.littlekt.graph.node.node
+import com.lehaine.littlekt.graph.node.resource.HAlign
+import com.lehaine.littlekt.graph.node.resource.VAlign
 import com.lehaine.littlekt.graph.node.ui.Control
 import com.lehaine.littlekt.graph.node.ui.control
 import com.lehaine.littlekt.graph.node.ui.label
@@ -123,7 +123,7 @@ class GameScene(context: Context) : RuneScene<GameInput>(
         super.update(dt)
 
         if (input.isKeyJustPressed(Key.R)) {
-            destroyRoot()
+            root.destroyAllChildren()
             root.createNodes()
             resize(graphics.width, graphics.height)
         }

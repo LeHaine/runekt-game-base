@@ -4,8 +4,8 @@ import com.lehaine.game.scene.GameScene
 import com.lehaine.littlekt.graph.node.render.BlendMode
 import com.lehaine.littlekt.graph.node.render.Material
 import com.lehaine.littlekt.graphics.Color
-import com.lehaine.littlekt.graphics.ParticleSimulator
-import com.lehaine.littlekt.graphics.TextureSlice
+import com.lehaine.littlekt.graphics.g2d.ParticleSimulator
+import com.lehaine.littlekt.graphics.g2d.TextureSlice
 import com.lehaine.littlekt.graphics.toFloatBits
 import com.lehaine.littlekt.math.random
 import com.lehaine.littlekt.util.seconds
@@ -61,7 +61,7 @@ class Fx(val gameScene: GameScene) {
         create(5) {
             val p = allocTopNormal(Assets.atlas.getByPrefix("fxSmallCircle").slice, x, y)
             p.scale((0.15f..0.25f).random())
-            p.color.set(DUST_COLOR).also { p.colorBits = DUST_COLOR_BITS }
+            p.color.set(DUST_COLOR)
             p.xDelta = (0.25f..0.75f).random() * dir
             p.yDelta = -(0.05f..0.15f).random()
             p.life = (0.05f..0.15f).random().seconds

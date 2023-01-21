@@ -4,13 +4,12 @@ import com.lehaine.game.Assets
 import com.lehaine.game.Config
 import com.lehaine.littlekt.Context
 import com.lehaine.littlekt.graph.node.Node
-import com.lehaine.littlekt.graph.node.component.HAlign
+import com.lehaine.littlekt.graph.node.resource.HAlign
 import com.lehaine.littlekt.graph.node.ui.button
 import com.lehaine.littlekt.graph.node.ui.centerContainer
 import com.lehaine.littlekt.graph.node.ui.label
 import com.lehaine.littlekt.graph.node.ui.vBoxContainer
 import com.lehaine.littlekt.util.viewport.ExtendViewport
-import com.lehaine.rune.engine.RuneScene
 import com.lehaine.rune.engine.RuneSceneDefault
 
 

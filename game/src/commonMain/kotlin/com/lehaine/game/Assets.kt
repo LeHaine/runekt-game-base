@@ -4,8 +4,8 @@ import com.lehaine.littlekt.AssetProvider
 import com.lehaine.littlekt.BitmapFontAssetParameter
 import com.lehaine.littlekt.Context
 import com.lehaine.littlekt.Disposable
-import com.lehaine.littlekt.graphics.TextureAtlas
-import com.lehaine.littlekt.graphics.font.BitmapFont
+import com.lehaine.littlekt.graphics.g2d.TextureAtlas
+import com.lehaine.littlekt.graphics.g2d.font.BitmapFont
 import kotlin.jvm.Volatile
 
 class Assets private constructor(context: Context) : Disposable {

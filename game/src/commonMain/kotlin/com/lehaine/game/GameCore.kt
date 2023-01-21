@@ -1,14 +1,10 @@
 package com.lehaine.game
 
-import com.lehaine.rune.engine.Rune
 import com.lehaine.game.scene.MenuScene
 import com.lehaine.littlekt.Context
-import com.lehaine.littlekt.async.KtScope
-import com.lehaine.littlekt.graphics.Color
-import com.lehaine.littlekt.graphics.gl.ClearBufferMask
 import com.lehaine.littlekt.input.Key
 import com.lehaine.littlekt.log.Logger
-import kotlinx.coroutines.launch
+import com.lehaine.rune.engine.Rune
 
 class GameCore(context: Context) : Rune(context) {
 
